@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=4 uid="uid://bciio4a8thmwc"]
+[gd_scene load_steps=19 format=4 uid="uid://bciio4a8thmwc"]
 
 [ext_resource type="Texture2D" uid="uid://dlu2qmx3mpith" path="res://assets/water_and_island_tiles_v2.png" id="1_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://8jt8rdjdcaci" path="res://scenes/player.tscn" id="2_0wfyh"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://dri8ktexab1b" path="res://assets/Flowers_Without_Outline_Spritesheet.png" id="5_tefeu"]
 [ext_resource type="Texture2D" uid="uid://b1cf7tplsv4p3" path="res://assets/Flowers_With_Outline_Spritesheet.png" id="6_o6xl0"]
 [ext_resource type="Texture2D" uid="uid://pprftbyj8pm4" path="res://assets/UI/00_270.png" id="7_tipki"]
+[ext_resource type="Script" uid="uid://dnprk8k2rdqyv" path="res://scenes/http_request.gd" id="9_85g3d"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ac4p3"]
 texture = ExtResource("1_tbgi4")
@@ -519,3 +520,6 @@ use_parent_material = true
 position = Vector2(-2, 12)
 tile_map_data = PackedByteArray("AAABAAEAAgAAAAAAAAASAAEAAgACAAAAAAASABIAAgACAAMAAAABABIAAgAAAAMAAAABAAIAAgADAAEAAAABAAMAAgADAAEAAAABAAQAAgADAAEAAAABAAUAAgADAAEAAAABAAYAAgADAAEAAAABAAcAAgADAAEAAAABAAgAAgADAAEAAAABAAkAAgADAAEAAAABAAoAAgADAAEAAAABAAsAAgADAAEAAAABAAwAAgADAAEAAAABAA0AAgADAAEAAAABAA4AAgADAAEAAAABAA8AAgADAAEAAAABABAAAgADAAEAAAABABEAAgADAAEAAAACAAEAAgABAAIAAAADAAEAAgABAAIAAAAEAAEAAgABAAIAAAAFAAEAAgABAAIAAAAGAAEAAgABAAIAAAAHAAEAAgABAAIAAAAIAAEAAgABAAIAAAAJAAEAAgABAAIAAAAKAAEAAgABAAIAAAALAAEAAgABAAIAAAAMAAEAAgABAAIAAAANAAEAAgABAAIAAAAOAAEAAgABAAIAAAAPAAEAAgABAAIAAAAQAAEAAgABAAIAAAARAAEAAgABAAIAAAASAAIAAgADAAEAAAASAAMAAgADAAEAAAASAAQAAgADAAEAAAASAAUAAgADAAEAAAASAAYAAgADAAEAAAASAAcAAgADAAEAAAASAAgAAgADAAEAAAASAAkAAgADAAEAAAASAAoAAgADAAEAAAASAAsAAgADAAEAAAASAAwAAgADAAEAAAASAA0AAgADAAEAAAASAA4AAgADAAEAAAASAA8AAgADAAEAAAASABAAAgADAAEAAAASABEAAgADAAEAAAACABIAAgABAAMAAAADABIAAgABAAMAAAAEABIAAgABAAMAAAAFABIAAgABAAMAAAAGABIAAgABAAMAAAAHABIAAgABAAMAAAAIABIAAgABAAMAAAAJABIAAgABAAMAAAAKABIAAgABAAMAAAALABIAAgABAAMAAAAMABIAAgABAAMAAAANABIAAgABAAMAAAAOABIAAgABAAMAAAAPABIAAgABAAMAAAAQABIAAgABAAMAAAARABIAAgABAAMAAAA=")
 tile_set = SubResource("TileSet_riyvs")
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+script = ExtResource("9_85g3d")

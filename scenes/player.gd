@@ -133,6 +133,7 @@ func getAnimDirection():
 func _input(event):
 	if event.is_action_pressed("interact") and isPlantable():		
 		decor.set_cell(grid_target, 1, Vector2(0,1))
+		HttpRequestManager.send_message("Hi",1,1,1)
 
 
 func isPlantable() -> bool:
