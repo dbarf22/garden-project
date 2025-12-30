@@ -1,6 +1,6 @@
 extends TextEdit
 
-const MAX_LENGTH = 10
+const MAX_LENGTH = 750
 var currentText = ""
 @onready var label_2: Label = $"../Label2"
 
@@ -18,3 +18,5 @@ func _on_text_changed() -> void:
 		currentText = newText
 		var textCount = str(newText.length(), "/", MAX_LENGTH)
 		label_2.text = textCount
+		
+		

@@ -5,6 +5,8 @@ var cardinal_direction: Vector2 = Vector2.DOWN #Holds vector that shows what dir
 
 var direction : Vector2 = Vector2.ZERO
 var state : String = "idle"
+
+#todo: loading and menu states 
 var loading: bool = true
 var menu: bool = false
 
@@ -12,6 +14,11 @@ var target_pixel: Vector2 = Vector2.ZERO # The pixel coordinates of the tile we 
 var last_grid_target: Vector2i = Vector2i(-1,-1) # Previously held grid_target value (initialized to not be equal to grid_target)
 var grid_target: Vector2i = Vector2i.ZERO # The grid we are looking at
 var atlasCoords: Vector2i = Vector2i.ZERO # Atlas coordinates of tilemap to check textures
+
+# Text box stuff
+@onready var text_entry: CanvasLayer = $"../TextEntry"
+@onready var text_edit: TextEdit = $"../TextEntry/CenterContainer/VBoxContainer/TextEdit"
+@onready var text_submit: Button = $"../TextEntry/CenterContainer/VBoxContainer/Button"
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var sprite: Sprite2D = $Sprite2D
@@ -28,11 +35,11 @@ func _ready():
 
 func _physics_process(delta: float):
 	
-	if !loading or !menu:
-		return false
+	if loading:
+		return true
 
 	# How this works: 
-	# Target position takes player's position and adds 20 pixels to it (>32 to compensate for overshoot)
+	# Target position takes player's position and adds 20 pixels to it (<32 to compensate for overshoot)
 	# So that gives the pixel location of where the player is faced. So we then want to make a variable
 	# To hold the current grid location, stored as a 2d integer vector. This uses the terrain's
 	# local_to_map method to convert the pixel location to the grid coordinates on the terrain tilemap
@@ -138,7 +145,8 @@ func getAnimDirection():
 # Handle the input of planting something
 func _input(event):
 	if event.is_action_pressed("interact") and isPlantable():		
-		await HttpRequestManager.send_message("Hi",grid_target.x,grid_target.y,1)
+		var submitted = false
+		text_submit.handle_interact(grid_target.x,grid_target.y)
 		decor.set_cell(grid_target, 1, Vector2(0,1))
 
 func isPlantable() -> bool:
@@ -151,6 +159,8 @@ func isPlantable() -> bool:
 		else: return false
 	else: return false
 
+
+
 # Networking stuff
 # First a method to plant flowers 
 func plant_flower(x:int, y:int, flowerType: int):
@@ -161,4 +171,5 @@ func populate():
 	var flowers = await HttpRequestManager.get_flowers()
 	for flower in flowers:
 		plant_flower(flower.x,flower.y,1)
+	print("Loading done")
 	loading = false

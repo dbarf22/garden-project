@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=4 uid="uid://bciio4a8thmwc"]
+[gd_scene load_steps=23 format=4 uid="uid://bciio4a8thmwc"]
 
 [ext_resource type="Texture2D" uid="uid://dlu2qmx3mpith" path="res://assets/water_and_island_tiles_v2.png" id="1_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://8jt8rdjdcaci" path="res://scenes/player.tscn" id="2_0wfyh"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://dnprk8k2rdqyv" path="res://scenes/http_request.gd" id="9_85g3d"]
 [ext_resource type="FontFile" uid="uid://b66h5813hqypg" path="res://assets/Fonts/Jersey10-Regular.ttf" id="10_choun"]
 [ext_resource type="Script" uid="uid://dq5hwea1pae8g" path="res://scenes/text_edit.gd" id="11_ya4ey"]
+[ext_resource type="Script" uid="uid://h3vhg3iufsl8" path="res://scenes/button.gd" id="12_eb6dy"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ac4p3"]
 texture = ExtResource("1_tbgi4")
@@ -533,7 +534,6 @@ tile_set = SubResource("TileSet_riyvs")
 script = ExtResource("9_85g3d")
 
 [node name="StartMenu" type="CanvasLayer" parent="."]
-visible = false
 
 [node name="ColorRect" type="ColorRect" parent="StartMenu"]
 anchors_preset = 15
@@ -574,9 +574,10 @@ theme_override_fonts/font = ExtResource("10_choun")
 theme_override_font_sizes/font_size = 20
 text = "Got it"
 
-[node name="TextBox" type="CanvasLayer" parent="."]
+[node name="TextEntry" type="CanvasLayer" parent="."]
+visible = false
 
-[node name="ColorRect" type="ColorRect" parent="TextBox"]
+[node name="ColorRect2" type="ColorRect" parent="TextEntry"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -586,7 +587,7 @@ size_flags_vertical = 4
 color = Color(0, 0, 0, 0.67058825)
 metadata/_edit_use_anchors_ = true
 
-[node name="CenterContainer" type="CenterContainer" parent="TextBox"]
+[node name="CenterContainer" type="CenterContainer" parent="TextEntry"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -599,19 +600,19 @@ offset_bottom = 250.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="TextBox/CenterContainer"]
+[node name="ColorRect" type="ColorRect" parent="TextEntry/CenterContainer"]
 custom_minimum_size = Vector2(500, 500)
 layout_mode = 2
 color = Color(0.16565639, 0.16565642, 0.16565639, 1)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TextBox/CenterContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="TextEntry/CenterContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="TextBox/CenterContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="TextEntry/CenterContainer/VBoxContainer"]
 layout_mode = 2
 text = "Write a message below:"
 
-[node name="TextEdit" type="TextEdit" parent="TextBox/CenterContainer/VBoxContainer"]
+[node name="TextEdit" type="TextEdit" parent="TextEntry/CenterContainer/VBoxContainer"]
 clip_contents = false
 custom_minimum_size = Vector2(450, 400)
 layout_mode = 2
@@ -620,8 +621,14 @@ wrap_mode = 1
 scroll_smooth = true
 script = ExtResource("11_ya4ey")
 
-[node name="Label2" type="Label" parent="TextBox/CenterContainer/VBoxContainer"]
+[node name="Label2" type="Label" parent="TextEntry/CenterContainer/VBoxContainer"]
 layout_mode = 2
 
+[node name="Button" type="Button" parent="TextEntry/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Send"
+script = ExtResource("12_eb6dy")
+
 [connection signal="pressed" from="StartMenu/CenterContainer/VBoxContainer/Button" to="StartMenu" method="hide"]
-[connection signal="text_changed" from="TextBox/CenterContainer/VBoxContainer/TextEdit" to="TextBox/CenterContainer/VBoxContainer/TextEdit" method="_on_text_changed"]
+[connection signal="text_changed" from="TextEntry/CenterContainer/VBoxContainer/TextEdit" to="TextEntry/CenterContainer/VBoxContainer/TextEdit" method="_on_text_changed"]
+[connection signal="pressed" from="TextEntry/CenterContainer/VBoxContainer/Button" to="TextEntry/CenterContainer/VBoxContainer/Button" method="_on_pressed"]
