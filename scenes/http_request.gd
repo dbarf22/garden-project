@@ -13,10 +13,24 @@ func _ready():
 	
 func _on_request_completed(result, response_code, headers, body):
 	var json = JSON.parse_string(body.get_string_from_utf8())
-	print(json)
-	print(response_code)
+
 	
 func send_message(message:String, x:int, y:int, flower_type:int):
-	var body = JSON.stringify({"message":message, "x":x,"y":y,"flower_type":flower_type})
+	var body = JSON.stringify({"message":message, "x":x, "y":y,"flower_type":flower_type})
 	request(URL,REQUEST_HEADERS,HTTPClient.METHOD_POST, body)
+	
+func get_flowers():
+	var code = request(URL,REQUEST_HEADERS,HTTPClient.METHOD_GET)
+	if code != OK:
+		print ("Couldn't retrieve flower information from db")
+		return []
+	var result = await request_completed
+	var responseCode = result[1]
+	
+	if responseCode != 200:
+		print("Couldn't retrieve flower information from db")
+		return[]
+	else: 
+		return JSON.parse_string(result[3].get_string_from_utf8())
+	
 	

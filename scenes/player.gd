@@ -5,6 +5,8 @@ var cardinal_direction: Vector2 = Vector2.DOWN #Holds vector that shows what dir
 
 var direction : Vector2 = Vector2.ZERO
 var state : String = "idle"
+var loading: bool = true
+var menu: bool = false
 
 var target_pixel: Vector2 = Vector2.ZERO # The pixel coordinates of the tile we are looking at
 var last_grid_target: Vector2i = Vector2i(-1,-1) # Previously held grid_target value (initialized to not be equal to grid_target)
@@ -17,6 +19,7 @@ var atlasCoords: Vector2i = Vector2i.ZERO # Atlas coordinates of tilemap to chec
 @onready var decor: TileMapLayer = $"../Decor"
 
 func _ready():
+	populate()
 	speed = 100
 	screen_size = get_viewport_rect().size
 	position = screen_size/2
@@ -24,6 +27,9 @@ func _ready():
 	target_pixel= global_position + (cardinal_direction * 20)
 
 func _physics_process(delta: float):
+	
+	if !loading or !menu:
+		return false
 
 	# How this works: 
 	# Target position takes player's position and adds 20 pixels to it (>32 to compensate for overshoot)
@@ -132,9 +138,8 @@ func getAnimDirection():
 # Handle the input of planting something
 func _input(event):
 	if event.is_action_pressed("interact") and isPlantable():		
+		await HttpRequestManager.send_message("Hi",grid_target.x,grid_target.y,1)
 		decor.set_cell(grid_target, 1, Vector2(0,1))
-		HttpRequestManager.send_message("Hi",1,1,1)
-
 
 func isPlantable() -> bool:
 	# First: Check the atlasCoordinates to see if they match to a dirt block
@@ -145,3 +150,15 @@ func isPlantable() -> bool:
 			return true
 		else: return false
 	else: return false
+
+# Networking stuff
+# First a method to plant flowers 
+func plant_flower(x:int, y:int, flowerType: int):
+	decor.set_cell(Vector2(x,y),1,Vector2(0,1))
+	
+# Next a method to grab flowers from db and call that previous method to populate
+func populate():
+	var flowers = await HttpRequestManager.get_flowers()
+	for flower in flowers:
+		plant_flower(flower.x,flower.y,1)
+	loading = false
