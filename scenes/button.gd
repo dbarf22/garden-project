@@ -19,5 +19,8 @@ func _on_pressed():
 	var message: String = text_edit.get_text()
 	self.disabled = true
 	await HttpRequestManager.send_message(message,xCoord,yCoord,1)
+	if HttpRequestManager.RESULT_SUCCESS != 0: 
+		print("Error.")
+		# todo: error message
 	self.disabled = false
 	text_box.hide();

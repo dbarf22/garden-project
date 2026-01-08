@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=4 uid="uid://bciio4a8thmwc"]
+[gd_scene load_steps=25 format=4 uid="uid://bciio4a8thmwc"]
 
 [ext_resource type="Texture2D" uid="uid://dlu2qmx3mpith" path="res://assets/water_and_island_tiles_v2.png" id="1_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://8jt8rdjdcaci" path="res://scenes/player.tscn" id="2_0wfyh"]
@@ -12,6 +12,7 @@
 [ext_resource type="FontFile" uid="uid://b66h5813hqypg" path="res://assets/Fonts/Jersey10-Regular.ttf" id="10_choun"]
 [ext_resource type="Script" uid="uid://dq5hwea1pae8g" path="res://scenes/text_edit.gd" id="11_ya4ey"]
 [ext_resource type="Script" uid="uid://h3vhg3iufsl8" path="res://scenes/button.gd" id="12_eb6dy"]
+[ext_resource type="Script" uid="uid://b53fnkuwstj05" path="res://scenes/message_screen_close.gd" id="13_trceg"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ac4p3"]
 texture = ExtResource("1_tbgi4")
@@ -505,6 +506,10 @@ font_size = 21
 shadow_size = 7
 shadow_color = Color(0, 0, 0, 0.38431373)
 
+[sub_resource type="LabelSettings" id="LabelSettings_eb6dy"]
+font = ExtResource("10_choun")
+font_size = 24
+
 [node name="Node2D" type="Node2D"]
 
 [node name="Water" type="TileMapLayer" parent="."]
@@ -534,6 +539,7 @@ tile_set = SubResource("TileSet_riyvs")
 script = ExtResource("9_85g3d")
 
 [node name="StartMenu" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="ColorRect" type="ColorRect" parent="StartMenu"]
 anchors_preset = 15
@@ -611,11 +617,14 @@ layout_mode = 2
 [node name="Label" type="Label" parent="TextEntry/CenterContainer/VBoxContainer"]
 layout_mode = 2
 text = "Write a message below:"
+label_settings = SubResource("LabelSettings_eb6dy")
 
 [node name="TextEdit" type="TextEdit" parent="TextEntry/CenterContainer/VBoxContainer"]
 clip_contents = false
 custom_minimum_size = Vector2(450, 400)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("10_choun")
+theme_override_font_sizes/font_size = 24
 placeholder_text = "..."
 wrap_mode = 1
 scroll_smooth = true
@@ -629,6 +638,55 @@ layout_mode = 2
 text = "Send"
 script = ExtResource("12_eb6dy")
 
+[node name="MessageScreen" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="ColorRect2" type="ColorRect" parent="MessageScreen"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 4
+color = Color(0, 0, 0, 0.67058825)
+metadata/_edit_use_anchors_ = true
+
+[node name="CenterContainer" type="CenterContainer" parent="MessageScreen"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ColorRect" type="ColorRect" parent="MessageScreen/CenterContainer"]
+custom_minimum_size = Vector2(500, 500)
+layout_mode = 2
+color = Color(0.16565639, 0.16565642, 0.16565639, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MessageScreen/CenterContainer"]
+custom_minimum_size = Vector2(450, 450)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MessageScreen/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Flower message:"
+label_settings = SubResource("LabelSettings_eb6dy")
+
+[node name="FlowerMessageText" type="RichTextLabel" parent="MessageScreen/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 400)
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("10_choun")
+scroll_following = true
+
+[node name="MessageScreenClose" type="Button" parent="MessageScreen/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Close
+"
+script = ExtResource("13_trceg")
+
 [connection signal="pressed" from="StartMenu/CenterContainer/VBoxContainer/Button" to="StartMenu" method="hide"]
 [connection signal="text_changed" from="TextEntry/CenterContainer/VBoxContainer/TextEdit" to="TextEntry/CenterContainer/VBoxContainer/TextEdit" method="_on_text_changed"]
 [connection signal="pressed" from="TextEntry/CenterContainer/VBoxContainer/Button" to="TextEntry/CenterContainer/VBoxContainer/Button" method="_on_pressed"]
+[connection signal="pressed" from="MessageScreen/CenterContainer/VBoxContainer/MessageScreenClose" to="MessageScreen/CenterContainer/VBoxContainer/MessageScreenClose" method="_on_pressed"]

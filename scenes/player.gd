@@ -24,6 +24,8 @@ var atlasCoords: Vector2i = Vector2i.ZERO # Atlas coordinates of tilemap to chec
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var terrain: TileMapLayer = $"../Terrain"
 @onready var decor: TileMapLayer = $"../Decor"
+@onready var message_screen: CanvasLayer = $"../MessageScreen"
+@onready var flower_message_text: RichTextLabel = $"../MessageScreen/CenterContainer/VBoxContainer/FlowerMessageText"
 
 func _ready():
 	populate()
@@ -144,10 +146,16 @@ func getAnimDirection():
 
 # Handle the input of planting something
 func _input(event):
+	print(isPlantable())
+	print(isPlant())
 	if event.is_action_pressed("interact") and isPlantable():		
 		var submitted = false
 		text_submit.handle_interact(grid_target.x,grid_target.y)
 		decor.set_cell(grid_target, 1, Vector2(0,1))
+	if event.is_action_pressed("interact") and isPlant():
+		var flower = await HttpRequestManager.get_flower(grid_target.x,grid_target.y)
+		flower_message_text.text = flower[0].message
+		message_screen.show()
 
 func isPlantable() -> bool:
 	# First: Check the atlasCoordinates to see if they match to a dirt block
@@ -156,10 +164,16 @@ func isPlantable() -> bool:
 		if decor.get_cell_source_id(grid_target) == 3 or decor.get_cell_source_id(grid_target) == -1:
 			# Third: If it has the placeholder, return true. Else, return false.
 			return true
-		else: return false
+		else: 
+			return false
 	else: return false
 
-
+func isPlant() -> bool:
+	if atlasCoords == Vector2i(0,3) or atlasCoords ==Vector2i(1,3) or atlasCoords ==Vector2i(2,3):
+		if decor.get_cell_source_id(grid_target) == 1:
+			return true
+		else: return false
+	else: return false
 
 # Networking stuff
 # First a method to plant flowers 
@@ -173,3 +187,7 @@ func populate():
 		plant_flower(flower.x,flower.y,1)
 	print("Loading done")
 	loading = false
+
+
+func _on_button_pressed() -> void:
+	pass # Replace with function body.
