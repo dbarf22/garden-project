@@ -22,8 +22,12 @@ I'd never used GDScript, but I found the syntax to be very comparable to Python,
 
 # Asset credits
 https://schwarnhild.itch.io/basic-tileset-and-asset-pack-32x32-pixels
+
 https://jennpixel.itch.io/free-flower-pack-12-icons
+
 https://netherzapdos.itch.io/paws-whiskers-isometric-cats-pack
+
 https://kaboff.itch.io/200-arrow-cursors-pack-32x32
+
 https://fonts.google.com/specimen/Jersey+10
 
