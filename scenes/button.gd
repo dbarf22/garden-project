@@ -1,7 +1,7 @@
 extends Button
 
-@onready var text_box: CanvasLayer = $"../../.."
-@onready var text_edit: TextEdit = $"../TextEdit"
+@onready var text_box: CanvasLayer = $"../../../.."
+@onready var text_edit: TextEdit = $"../../TextEdit"
 
 var xCoord: int
 var yCoord: int

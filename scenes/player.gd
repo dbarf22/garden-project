@@ -8,7 +8,6 @@ var state : String = "idle"
 
 #todo: loading and menu states 
 var loading: bool = true
-var menu: bool = false
 
 var target_pixel: Vector2 = Vector2.ZERO # The pixel coordinates of the tile we are looking at
 var last_grid_target: Vector2i = Vector2i(-1,-1) # Previously held grid_target value (initialized to not be equal to grid_target)
@@ -18,7 +17,10 @@ var atlasCoords: Vector2i = Vector2i.ZERO # Atlas coordinates of tilemap to chec
 # Text box stuff
 @onready var text_entry: CanvasLayer = $"../TextEntry"
 @onready var text_edit: TextEdit = $"../TextEntry/CenterContainer/VBoxContainer/TextEdit"
-@onready var text_submit: Button = $"../TextEntry/CenterContainer/VBoxContainer/Button"
+@onready var text_submit: Button = $"../TextEntry/CenterContainer/VBoxContainer/HBoxContainer/Button"
+
+# Start menu
+@onready var start_button: Button = $"../StartMenu/CenterContainer/VBoxContainer/Button"
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var sprite: Sprite2D = $Sprite2D
@@ -30,16 +32,15 @@ var atlasCoords: Vector2i = Vector2i.ZERO # Atlas coordinates of tilemap to chec
 func _ready():
 	populate()
 	speed = 100
-	screen_size = get_viewport_rect().size
+	screen_size = Vector2i(640,640)
 	position = screen_size/2
 	animation_player.play("idle_down")
-	target_pixel= global_position + (cardinal_direction * 20)
+	target_pixel = global_position + (cardinal_direction * 20)
 
 func _physics_process(delta: float):
-	
-	if loading:
-		return true
 
+	if loading or text_edit.has_focus():
+		return false
 	# How this works: 
 	# Target position takes player's position and adds 20 pixels to it (<32 to compensate for overshoot)
 	# So that gives the pixel location of where the player is faced. So we then want to make a variable
@@ -146,13 +147,14 @@ func getAnimDirection():
 
 # Handle the input of planting something
 func _input(event):
-	print(isPlantable())
-	print(isPlant())
+	if text_edit.has_focus():
+		return
+		
 	if event.is_action_pressed("interact") and isPlantable():		
 		var submitted = false
 		text_submit.handle_interact(grid_target.x,grid_target.y)
 		decor.set_cell(grid_target, 1, Vector2(0,1))
-	if event.is_action_pressed("interact") and isPlant():
+	elif event.is_action_pressed("interact") and isPlant():
 		var flower = await HttpRequestManager.get_flower(grid_target.x,grid_target.y)
 		flower_message_text.text = flower[0].message
 		message_screen.show()
@@ -178,7 +180,7 @@ func isPlant() -> bool:
 # Networking stuff
 # First a method to plant flowers 
 func plant_flower(x:int, y:int, flowerType: int):
-	decor.set_cell(Vector2(x,y),1,Vector2(0,1))
+	decor.set_cell(Vector2i(x,y),1,Vector2i(0,1))
 	
 # Next a method to grab flowers from db and call that previous method to populate
 func populate():
@@ -187,6 +189,7 @@ func populate():
 		plant_flower(flower.x,flower.y,1)
 	print("Loading done")
 	loading = false
+	start_button.disabled = false
 
 
 func _on_button_pressed() -> void:

@@ -1,5 +1,6 @@
-[gd_scene load_steps=25 format=4 uid="uid://bciio4a8thmwc"]
+[gd_scene load_steps=30 format=4 uid="uid://bciio4a8thmwc"]
 
+[ext_resource type="Shader" uid="uid://b0jf1cytijruh" path="res://scenes/main.gdshader" id="1_jkv2x"]
 [ext_resource type="Texture2D" uid="uid://dlu2qmx3mpith" path="res://assets/water_and_island_tiles_v2.png" id="1_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://8jt8rdjdcaci" path="res://scenes/player.tscn" id="2_0wfyh"]
 [ext_resource type="Texture2D" uid="uid://cot4hpfp444ek" path="res://assets/terrain_tiles_v2.png" id="2_tefeu"]
@@ -12,6 +13,7 @@
 [ext_resource type="FontFile" uid="uid://b66h5813hqypg" path="res://assets/Fonts/Jersey10-Regular.ttf" id="10_choun"]
 [ext_resource type="Script" uid="uid://dq5hwea1pae8g" path="res://scenes/text_edit.gd" id="11_ya4ey"]
 [ext_resource type="Script" uid="uid://h3vhg3iufsl8" path="res://scenes/button.gd" id="12_eb6dy"]
+[ext_resource type="Script" uid="uid://ub0ewqawlekp" path="res://scenes/button_2.gd" id="13_a8y0u"]
 [ext_resource type="Script" uid="uid://b53fnkuwstj05" path="res://scenes/message_screen_close.gd" id="13_trceg"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ac4p3"]
@@ -500,15 +502,60 @@ tile_size = Vector2i(32, 32)
 sources/1 = SubResource("TileSetAtlasSource_85g3d")
 sources/3 = SubResource("TileSetAtlasSource_choun")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jkv2x"]
+shader = ExtResource("1_jkv2x")
+shader_parameter/blur = 3.5
+shader_parameter/warp_intensity = 0.025
+shader_parameter/strength_x = 12.0
+shader_parameter/strength_y = 12.0
+shader_parameter/offset_x = 0.0
+shader_parameter/offset_y = 0.0
+shader_parameter/corner_radius = 16.0
+shader_parameter/edge_smoothness = 1.0
+shader_parameter/tint = Color(0.95, 0.97, 1, 0.12)
+shader_parameter/edge_highlight = Color(1, 1, 1, 0.3)
+shader_parameter/edge_width = 1.5
+shader_parameter/chromatic_strength = 5.0
+
 [sub_resource type="LabelSettings" id="LabelSettings_ya4ey"]
 font = ExtResource("10_choun")
 font_size = 21
 shadow_size = 7
 shadow_color = Color(0, 0, 0, 0.38431373)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jbj1t"]
+shader = ExtResource("1_jkv2x")
+shader_parameter/blur = 3.5
+shader_parameter/warp_intensity = 0.025
+shader_parameter/strength_x = 12.0
+shader_parameter/strength_y = 12.0
+shader_parameter/offset_x = 0.0
+shader_parameter/offset_y = 0.0
+shader_parameter/corner_radius = 16.0
+shader_parameter/edge_smoothness = 1.0
+shader_parameter/tint = Color(0.95, 0.97, 1, 0.12)
+shader_parameter/edge_highlight = Color(1, 1, 1, 0.3)
+shader_parameter/edge_width = 1.5
+shader_parameter/chromatic_strength = 5.0
+
 [sub_resource type="LabelSettings" id="LabelSettings_eb6dy"]
 font = ExtResource("10_choun")
 font_size = 24
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_muem4"]
+shader = ExtResource("1_jkv2x")
+shader_parameter/blur = 3.5
+shader_parameter/warp_intensity = 0.025
+shader_parameter/strength_x = 12.0
+shader_parameter/strength_y = 12.0
+shader_parameter/offset_x = 0.0
+shader_parameter/offset_y = 0.0
+shader_parameter/corner_radius = 16.0
+shader_parameter/edge_smoothness = 1.0
+shader_parameter/tint = Color(0.95, 0.97, 1, 0.12)
+shader_parameter/edge_highlight = Color(1, 1, 1, 0.3)
+shader_parameter/edge_width = 1.5
+shader_parameter/chromatic_strength = 5.0
 
 [node name="Node2D" type="Node2D"]
 
@@ -559,6 +606,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="ColorRect" type="ColorRect" parent="StartMenu/CenterContainer"]
+material = SubResource("ShaderMaterial_jkv2x")
 custom_minimum_size = Vector2(400, 400)
 layout_mode = 2
 color = Color(0.16565639, 0.16565642, 0.16565639, 1)
@@ -578,6 +626,7 @@ horizontal_alignment = 1
 layout_mode = 2
 theme_override_fonts/font = ExtResource("10_choun")
 theme_override_font_sizes/font_size = 20
+disabled = true
 text = "Got it"
 
 [node name="TextEntry" type="CanvasLayer" parent="."]
@@ -607,7 +656,8 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="ColorRect" type="ColorRect" parent="TextEntry/CenterContainer"]
-custom_minimum_size = Vector2(500, 500)
+material = SubResource("ShaderMaterial_jbj1t")
+custom_minimum_size = Vector2(500, 525)
 layout_mode = 2
 color = Color(0.16565639, 0.16565642, 0.16565639, 1)
 
@@ -633,10 +683,25 @@ script = ExtResource("11_ya4ey")
 [node name="Label2" type="Label" parent="TextEntry/CenterContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Button" type="Button" parent="TextEntry/CenterContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="TextEntry/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
+alignment = 1
+
+[node name="Button" type="Button" parent="TextEntry/CenterContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("10_choun")
+theme_override_font_sizes/font_size = 24
 text = "Send"
 script = ExtResource("12_eb6dy")
+
+[node name="Button2" type="Button" parent="TextEntry/CenterContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("10_choun")
+theme_override_font_sizes/font_size = 24
+text = "Cancel"
+script = ExtResource("13_a8y0u")
 
 [node name="MessageScreen" type="CanvasLayer" parent="."]
 visible = false
@@ -661,6 +726,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ColorRect" type="ColorRect" parent="MessageScreen/CenterContainer"]
+material = SubResource("ShaderMaterial_muem4")
 custom_minimum_size = Vector2(500, 500)
 layout_mode = 2
 color = Color(0.16565639, 0.16565642, 0.16565639, 1)
@@ -678,15 +744,19 @@ label_settings = SubResource("LabelSettings_eb6dy")
 custom_minimum_size = Vector2(0, 400)
 layout_mode = 2
 theme_override_fonts/normal_font = ExtResource("10_choun")
+theme_override_font_sizes/normal_font_size = 24
 scroll_following = true
 
 [node name="MessageScreenClose" type="Button" parent="MessageScreen/CenterContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("10_choun")
+theme_override_font_sizes/font_size = 24
 text = "Close
 "
 script = ExtResource("13_trceg")
 
 [connection signal="pressed" from="StartMenu/CenterContainer/VBoxContainer/Button" to="StartMenu" method="hide"]
 [connection signal="text_changed" from="TextEntry/CenterContainer/VBoxContainer/TextEdit" to="TextEntry/CenterContainer/VBoxContainer/TextEdit" method="_on_text_changed"]
-[connection signal="pressed" from="TextEntry/CenterContainer/VBoxContainer/Button" to="TextEntry/CenterContainer/VBoxContainer/Button" method="_on_pressed"]
+[connection signal="pressed" from="TextEntry/CenterContainer/VBoxContainer/HBoxContainer/Button" to="TextEntry/CenterContainer/VBoxContainer/HBoxContainer/Button" method="_on_pressed"]
+[connection signal="pressed" from="TextEntry/CenterContainer/VBoxContainer/HBoxContainer/Button2" to="TextEntry/CenterContainer/VBoxContainer/HBoxContainer/Button2" method="_on_pressed"]
 [connection signal="pressed" from="MessageScreen/CenterContainer/VBoxContainer/MessageScreenClose" to="MessageScreen/CenterContainer/VBoxContainer/MessageScreenClose" method="_on_pressed"]

@@ -9,6 +9,7 @@ const REQUEST_HEADERS = [
 	]
 
 func _ready():
+	accept_gzip = false
 	request_completed.connect(_on_request_completed)
 	
 func _on_request_completed(result, response_code, headers, body):
