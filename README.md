@@ -1,7 +1,7 @@
 ### Live version posted on https://dbarf22.itch.io/garden-project
 
 # About
-This is a simple little project made inside of the Godot engine. My main thought process behind making this was not only to give me a way to learn my way around a game engine for the first time, but also to make something that scratches an itch I've had for a while.
+This is a simple little project made inside of the Godot engine. You walk around as a little cat and you can either plant a flower or read a flower. Once a message is planted, anyone can see it and it expires after 24 hours. My main thought process behind making this was not only to give me a way to learn my way around a game engine for the first time, but also to make something that scratches an itch I've had for a while.
 
 I've never known life without the internet, but I felt like the older I got, the more the internet began to stray away from what I thought it was. When I was younger, I always viewed it as this thing that simply had the ability to connect everyone- Steam chat rooms where you could talk to people about games, Reddit threads and random discussion forms with tight-knit communities for niche subjects, Blogger sites where you could read about peoples' lives and opinions, etc. It was just this giant collaborative network where all humans could express themselves and make cool websites. 
 
